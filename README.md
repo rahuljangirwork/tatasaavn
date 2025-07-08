@@ -1,9 +1,9 @@
-# MusicHub
+# TATAsaavn
 
-MusicHub is a web music app built using Next.js 14, App Router, and an unofficial music API. The user interface is styled with Tailwind CSS.
+TATAsaavn is a web music app built using Next.js 14, App Router, and an unofficial music API. The user interface is styled with Tailwind CSS.
 
-[![Follow me](https://img.shields.io/github/followers/r2hu1?style=social)](https://github.com/r2hu1)
-[![Star this Repo](https://img.shields.io/github/stars/r2hu1/musichub?style=social)](https://github.com/r2hu1/musichub)
+[![Follow me](https://img.shields.io/github/followers/r2hu1?style=social)](https://rahuljangir.work)
+[![Star this Repo](https://img.shields.io/github/stars/r2hu1/TATAsaavn?style=social)](https://rahuljangir.work/TATAsaavn)
 
 <br/>
 
@@ -45,8 +45,8 @@ Mobile Player
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/r2hu1/musichub.git
-cd musichub
+git clone https://rahuljangir.work/TATAsaavn.git
+cd TATAsaavn
 ```
 
 2. Install dependencies:
@@ -61,7 +61,7 @@ npm install or pnpm install
 npm run dev or pnpm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) in your browser to explore MusicHub.
+Visit [http://localhost:3000](http://localhost:3000) in your browser to explore TATAsaavn.
 
 ## Setup Api
 
