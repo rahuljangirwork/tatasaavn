@@ -12,6 +12,7 @@ import { NextContext } from "@/hooks/use-context";
 import Next from "@/components/cards/next";
 import { useMusic } from "@/components/music-provider";
 import { IoPause } from "react-icons/io5";
+import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 
 export default function Player({ id }) {
     const [data, setData] = useState([]);
@@ -56,19 +57,48 @@ export default function Player({ id }) {
         setPlaying(!playing);
     };
 
+    // const downloadSong = async () => {
+    //     setIsDownloading(true);
+    //     const response = await fetch(audioURL);
+    //     const datas = await response.blob();
+    //     const url = URL.createObjectURL(datas);
+    //     const a = document.createElement('a');
+    //     a.href = url;
+    //     a.download = `${data.name}.mp3`;
+    //     a.click();
+    //     URL.revokeObjectURL(url);
+    //     toast.success('downloaded');
+    //     setIsDownloading(false);
+    // };
+
     const downloadSong = async () => {
         setIsDownloading(true);
-        const response = await fetch(audioURL);
-        const datas = await response.blob();
-        const url = URL.createObjectURL(datas);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${data.name}.mp3`;
-        a.click();
-        URL.revokeObjectURL(url);
-        toast.success('downloaded');
-        setIsDownloading(false);
+    
+        try {
+            // Fetch the song file
+            const response = await fetch(audioURL);
+            const blob = await response.blob();
+    
+            // Create an Object URL for the audio file
+            const url = URL.createObjectURL(blob);
+    
+            // Create a temporary link element to simulate a download
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${data.name} - ${data.artists.primary[0]?.name || 'Unknown'}.mp3`; // Use song name and artist for filename
+            a.click();
+    
+            // Clean up the Object URL
+            URL.revokeObjectURL(url);
+    
+            toast.success('Song downloaded successfully with metadata!');
+        } catch (error) {
+            toast.error('Download failed. Please try again.');
+        } finally {
+            setIsDownloading(false);
+        }
     };
+    
 
     const handleSeek = (e) => {
         const seekTime = e[0];
@@ -83,14 +113,27 @@ export default function Player({ id }) {
 
     const handleShare = () => {
         try {
-            navigator.share({
-                url: `https://${window.location.host}/${data.id}`
-            });
-        }
-        catch (e) {
+            // Check if the Web Share API is available in the browser
+            if (navigator.share) {
+                navigator.share({
+                    title: `${data.name} by ${data.artists.primary[0]?.name || "Unknown"}`,
+                    text: `Check out this song: ${data.name} by ${data.artists.primary[0]?.name || "Unknown"}`,
+                    url: `https://${window.location.host}/${data.id}`,  // Construct the URL for the song
+                })
+                .then(() => toast.success('Song shared successfully!'))
+                .catch((err) => toast.error('Error while sharing the song.'));
+            } else {
+                // Fallback for browsers that don't support Web Share API (i.e., desktop browsers)
+                const songURL = `https://${window.location.host}/${data.id}`;
+                navigator.clipboard.writeText(songURL)  // Copy the URL to clipboard
+                    .then(() => toast.success('Song URL copied to clipboard!'))
+                    .catch(() => toast.error('Failed to copy URL.'));
+            }
+        } catch (e) {
             toast.error('Something went wrong!');
         }
-    }
+    };
+    
 
 
     useEffect(() => {

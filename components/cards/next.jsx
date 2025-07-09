@@ -5,22 +5,26 @@ import { Play } from "lucide-react";
 export default function Next({ name, artist, image, id, next = true }) {
     return (
         <Link href={`/${id}`}>
-            <div className="flex items-center gap-3 bg-secondary p-2 rounded-md">
-                <img src={image} className="aspect-square w-10 rounded-md" />
-                <div className="overflow-hidden flex-1">
-                    <h1 className="text-secondary-foreground text-base text-ellipsis whitespace-nowrap overflow-hidden sm:max-w-md max-w-[150px]">
+            <div className="flex items-center gap-4 p-4 rounded-xl bg-card hover:shadow-lg transition-transform transform hover:scale-105">
+                <img src={image} alt={name} className="w-12 h-12 object-cover rounded-lg" />
+                <div className="flex-1">
+                    <h1 className="text-lg font-semibold text-foreground truncate max-w-[150px] sm:max-w-md">
                         {name}
                     </h1>
-                    <p className="-mt-0.5 mb-1 text-xs text-muted-foreground overflow-hidden text-ellipsis whitespace-nowrap">
-                        by{' '}
-                        <span className="text-secondary-foreground">
-                            {artist}
-                        </span>
+                    <p className="text-xs text-muted-foreground truncate">
+                        by <span className="font-semibold text-secondary-foreground">{artist}</span>
                     </p>
                 </div>
-                {next && <Badge className="!font-normal">next</Badge>}
-                {!next && <Badge><Play size={16} className="w-3 px-0 h-4" /></Badge>}
+                {next ? (
+                    <Badge variant="outline" className="!font-normal text-primary-foreground border-primary">
+                        Next
+                    </Badge>
+                ) : (
+                    <Badge variant="default" className="text-primary-foreground">
+                        <Play size={16} className="w-4 h-4" />
+                    </Badge>
+                )}
             </div>
         </Link>
-    )
+    );
 }
